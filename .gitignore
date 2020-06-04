@@ -1,0 +1,5 @@
+node_modules/
+dejapp.js
+generatedoc.sh
+*doc*
+.env*
