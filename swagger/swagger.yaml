@@ -1,0 +1,1270 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: event api service
+schemes:
+# tip: remove http to make production-grade
+- http
+- https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+  - multipart/form-data
+  - text/plain
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+  - text/plain
+  - text/csv
+  - text/html
+  - image/png
+  - image/gif
+  - image/jpeg
+host: localhost
+basePath: /
+x-a127-config: {}
+x-a127-services: 
+  defaultQuota:     
+    provider: "volos-quota-memory"
+    options:
+      timeUnit: "minute"
+      interval: 1
+      allow: 40
+paths:
+  /login:
+    x-swagger-router-controller: auth
+    post:
+      summary: login with email and password
+      description: login with email and password
+      operationId: loginPost
+      tags: 
+        - Auth
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+  /signup:
+    x-swagger-router-controller: auth
+    post:
+      summary: Signup New User
+      description: Signup New User
+      operationId: signup
+      tags: 
+        - Auth
+      parameters:
+        - in: body
+          name: data
+          schema:
+            $ref: "#/definitions/Signup"
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+  /customers/{id}:
+    x-swagger-router-controller: customer
+    get:
+      summary: Get Customer by id
+      description: Get Customer by id
+      operationId: getCustomer
+      tags: 
+        - Customer
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of Customer to retrieve'
+          required: true
+          type: string
+        - in: query
+          name: _select
+          description: 'select only specified properties eg &#39;username,email&#39; exclude &#39;-email,-password&#39;'
+          required: false
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    put:
+      summary: Update Customer by id
+      description: Update Customer by id
+      operationId: updateCustomer
+      tags: 
+        - Customer
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of Customer to update'
+          required: true
+          type: string
+        - in: body
+          name: data
+          schema:
+            $ref: "#/definitions/UpdateCustomer"
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    delete:
+      summary: Delete Customer by id
+      description: Delete Customer by id
+      operationId: deleteCustomer
+      tags: 
+        - Customer
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of Customer to delete'
+          required: true
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+  /customers:
+    x-swagger-router-controller: customer
+    get:
+      summary: Get all Customers
+      description: Get all Customers
+      operationId: getCustomers
+      tags: 
+        - Customer
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: query
+          name: _limit
+          description: 'limit response length'
+          required: false
+          type: number
+        - in: query
+          name: _skip
+          description: 'skip the given amount of data'
+          required: false
+          type: number
+        - in: query
+          name: _sort
+          description: 'sort by data eg &quot;createdAt:1&quot; in ASC, &quot;createdAt:-1&quot; in DESC'
+          required: false
+          type: string
+        - in: query
+          name: _count
+          description: 'if specified, returns the number count of query result'
+          required: false
+          type: boolean
+        - in: query
+          name: _select
+          description: 'select only specified properties eg &#39;username,email&#39; exclude &#39;-email,-password&#39;'
+          required: false
+          type: string
+        - in: query
+          name: firstName
+          description: 'firstName property'
+          required: false
+          type: string
+        - in: query
+          name: lastName
+          description: 'lastName property'
+          required: false
+          type: string
+        - in: query
+          name: email
+          description: 'email property'
+          required: false
+          type: string
+        - in: query
+          name: phone
+          description: 'phone property'
+          required: false
+          type: string
+        - in: query
+          name: createdAt
+          description: 'date of creation'
+          required: false
+          type: string
+        - in: query
+          name: updatedAt
+          description: 'date of last update'
+          required: false
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    post:
+      summary: Create new Customer
+      description: Create new Customer
+      operationId: createCustomer
+      tags: 
+        - Customer
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: body
+          name: data
+          schema:
+            $ref: "#/definitions/CreateCustomer"
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+  /movies/{id}:
+    x-swagger-router-controller: movie
+    get:
+      summary: Get Movie by id
+      description: Get Movie by id
+      operationId: getMovie
+      tags: 
+        - Movie
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of movie to retrieve'
+          required: true
+          type: string
+        - in: query
+          name: _select
+          description: 'select only specified properties eg &#39;username,email&#39; exclude &#39;-email,-password&#39;'
+          required: false
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    put:
+      summary: Update Movie by id
+      description: Update Movie by id
+      operationId: updateMovie
+      tags: 
+        - Movie
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of Movie to update'
+          required: true
+          type: string
+        - in: body
+          name: data
+          schema:
+            $ref: "#/definitions/UpdateMovie"
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+  /movies:
+    x-swagger-router-controller: movie
+    get:
+      summary: Get all Movies
+      description: Get all Movies
+      operationId: getMovies
+      tags: 
+        - Movie
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: query
+          name: _limit
+          description: 'limit response length'
+          required: false
+          type: number
+        - in: query
+          name: _skip
+          description: 'skip the given amount of data'
+          required: false
+          type: number
+        - in: query
+          name: _sort
+          description: 'sort by data eg &quot;createdAt:1&quot; in ASC, &quot;createdAt:-1&quot; in DESC'
+          required: false
+          type: string
+        - in: query
+          name: _count
+          description: 'if specified, returns the number count of query result'
+          required: false
+          type: boolean
+        - in: query
+          name: _select
+          description: 'select only specified properties eg &#39;username,email&#39; exclude &#39;-email,-password&#39;'
+          required: false
+          type: string
+        - in: query
+          name: name
+          description: 'name property'
+          required: false
+          type: string
+        - in: query
+          name: description
+          description: 'description property'
+          required: false
+          type: string
+        - in: query
+          name: active
+          description: 'active property'
+          required: false
+          type: string
+        - in: query
+          name: createdAt
+          description: 'date of creation'
+          required: false
+          type: string
+        - in: query
+          name: updatedAt
+          description: 'date of last update'
+          required: false
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    post:
+      summary: Create new Movie
+      description: Create new Movie
+      operationId: createMovie
+      tags: 
+        - Movie
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: body
+          name: data
+          schema:
+            $ref: "#/definitions/CreateMovie"
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+  /Movies/{id}:
+    x-swagger-router-controller: movie
+    delete:
+      summary: Delete Movie by id
+      description: Delete Movie by id
+      operationId: deleteMovie
+      tags: 
+        - Movie
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of Movie to delete'
+          required: true
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+  /movieLogs/{id}:
+    x-swagger-router-controller: movieLog
+    get:
+      summary: Get MovieLog by id
+      description: Get MovieLog by id
+      operationId: getMovieLog
+      tags: 
+        - MovieLog
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of movieLog to retrieve'
+          required: true
+          type: string
+        - in: query
+          name: _select
+          description: 'select only specified properties eg &#39;username,email&#39; exclude &#39;-email,-password&#39;'
+          required: false
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    put:
+      summary: Update MovieLog by id
+      description: Update MovieLog by id
+      operationId: updateMovieLog
+      tags: 
+        - MovieLog
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of MovieLog to update'
+          required: true
+          type: string
+        - in: body
+          name: data
+          schema:
+            $ref: "#/definitions/UpdateMovieLog"
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    delete:
+      summary: Delete MovieLog by id
+      description: Delete MovieLog by id
+      operationId: deleteMovieLog
+      tags: 
+        - MovieLog
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of MovieLog to delete'
+          required: true
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+  /movieLogs:
+    x-swagger-router-controller: movieLog
+    get:
+      summary: Get all MovieLogs
+      description: Get all MovieLogs
+      operationId: getMovieLogs
+      tags: 
+        - MovieLog
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: query
+          name: _limit
+          description: 'limit response length'
+          required: false
+          type: number
+        - in: query
+          name: _skip
+          description: 'skip the given amount of data'
+          required: false
+          type: number
+        - in: query
+          name: _sort
+          description: 'sort by data eg &quot;createdAt:1&quot; in ASC, &quot;createdAt:-1&quot; in DESC'
+          required: false
+          type: string
+        - in: query
+          name: _count
+          description: 'if specified, returns the number count of query result'
+          required: false
+          type: boolean
+        - in: query
+          name: _select
+          description: 'select only specified properties eg &#39;username,email&#39; exclude &#39;-email,-password&#39;'
+          required: false
+          type: string
+        - in: query
+          name: movie
+          description: 'movie property'
+          required: false
+          type: string
+        - in: query
+          name: createdAt
+          description: 'date of creation'
+          required: false
+          type: string
+        - in: query
+          name: updatedAt
+          description: 'date of last update'
+          required: false
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    post:
+      summary: Create new MovieLog
+      description: Create new MovieLog
+      operationId: createMovieLog
+      tags: 
+        - MovieLog
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: body
+          name: data
+          schema:
+            $ref: "#/definitions/CreateMovieLog"
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+  /tickets/{id}:
+    x-swagger-router-controller: ticket
+    get:
+      summary: Get Ticket by id
+      description: Get Ticket by id
+      operationId: getTicket
+      tags: 
+        - Ticket
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of Ticket to retrieve'
+          required: true
+          type: string
+        - in: query
+          name: _select
+          description: 'select only specified properties eg &#39;username,email&#39; exclude &#39;-email,-password&#39;'
+          required: false
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    put:
+      summary: Update Ticket by id
+      description: Update Ticket by id
+      operationId: updateTicket
+      tags: 
+        - Ticket
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of Ticket to update'
+          required: true
+          type: string
+        - in: body
+          name: data
+          schema:
+            $ref: "#/definitions/UpdateTicket"
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    delete:
+      summary: Delete Ticket by id
+      description: Delete Ticket by id
+      operationId: deleteTicket
+      tags: 
+        - Ticket
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of Ticket to delete'
+          required: true
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+  /tickets:
+    x-swagger-router-controller: ticket
+    get:
+      summary: Get all Tickets
+      description: Get all Tickets
+      operationId: getTickets
+      tags: 
+        - Ticket
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: query
+          name: _limit
+          description: 'limit response length'
+          required: false
+          type: number
+        - in: query
+          name: _skip
+          description: 'skip the given amount of data'
+          required: false
+          type: number
+        - in: query
+          name: _sort
+          description: 'sort by data eg &quot;createdAt:1&quot; in ASC, &quot;createdAt:-1&quot; in DESC'
+          required: false
+          type: string
+        - in: query
+          name: _count
+          description: 'if specified, returns the number count of query result'
+          required: false
+          type: boolean
+        - in: query
+          name: _select
+          description: 'select only specified properties eg &#39;username,email&#39; exclude &#39;-email,-password&#39;'
+          required: false
+          type: string
+        - in: query
+          name: movie
+          description: 'movie property'
+          required: false
+          type: string
+        - in: query
+          name: capacity
+          description: 'capacity property'
+          required: false
+          type: string
+        - in: query
+          name: expiry
+          description: 'expiry property'
+          required: false
+          type: string
+        - in: query
+          name: sold
+          description: 'sold property'
+          required: false
+          type: string
+        - in: query
+          name: createdAt
+          description: 'date of creation'
+          required: false
+          type: string
+        - in: query
+          name: updatedAt
+          description: 'date of last update'
+          required: false
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    post:
+      summary: Create new Ticket
+      description: Create new Ticket
+      operationId: createTicket
+      tags: 
+        - Ticket
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: body
+          name: data
+          schema:
+            $ref: "#/definitions/CreateTicket"
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+  /ticketLogs/{id}:
+    x-swagger-router-controller: ticketLog
+    get:
+      summary: Get TicketLog by id
+      description: Get TicketLog by id
+      operationId: getTicketLog
+      tags: 
+        - TicketLog
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of TicketLog to retrieve'
+          required: true
+          type: string
+        - in: query
+          name: _select
+          description: 'select only specified properties eg &#39;username,email&#39; exclude &#39;-email,-password&#39;'
+          required: false
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    put:
+      summary: Update TicketLog by id
+      description: Update TicketLog by id
+      operationId: updateTicketLog
+      tags: 
+        - TicketLog
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of TicketLog to update'
+          required: true
+          type: string
+        - in: body
+          name: data
+          schema:
+            $ref: "#/definitions/UpdateTicketLog"
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    delete:
+      summary: Delete TicketLog by id
+      description: Delete TicketLog by id
+      operationId: deleteTicketLog
+      tags: 
+        - TicketLog
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of TicketLog to delete'
+          required: true
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+  /ticketLogs:
+    x-swagger-router-controller: ticketLog
+    get:
+      summary: Get all TicketLogs
+      description: Get all TicketLogs
+      operationId: getTicketLogs
+      tags: 
+        - TicketLog
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: query
+          name: _limit
+          description: 'limit response length'
+          required: false
+          type: number
+        - in: query
+          name: _skip
+          description: 'skip the given amount of data'
+          required: false
+          type: number
+        - in: query
+          name: _sort
+          description: 'sort by data eg &quot;createdAt:1&quot; in ASC, &quot;createdAt:-1&quot; in DESC'
+          required: false
+          type: string
+        - in: query
+          name: _count
+          description: 'if specified, returns the number count of query result'
+          required: false
+          type: boolean
+        - in: query
+          name: _select
+          description: 'select only specified properties eg &#39;username,email&#39; exclude &#39;-email,-password&#39;'
+          required: false
+          type: string
+        - in: query
+          name: ticket
+          description: 'ticket property'
+          required: false
+          type: string
+        - in: query
+          name: createdAt
+          description: 'date of creation'
+          required: false
+          type: string
+        - in: query
+          name: updatedAt
+          description: 'date of last update'
+          required: false
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    post:
+      summary: Create new TicketLog
+      description: Create new TicketLog
+      operationId: createTicketLog
+      tags: 
+        - TicketLog
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: body
+          name: data
+          schema:
+            $ref: "#/definitions/CreateTicketLog"
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+  /users/{id}:
+    x-swagger-router-controller: user
+    get:
+      summary: Get User by id
+      description: Get User by id
+      operationId: getUser
+      tags: 
+        - User
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of User to retrieve'
+          required: true
+          type: string
+        - in: query
+          name: _select
+          description: 'select only specified properties eg &#39;username,email&#39; exclude &#39;-email,-password&#39;'
+          required: false
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    put:
+      summary: Update User by id
+      description: Update User by id
+      operationId: updateUser
+      tags: 
+        - User
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of User to update'
+          required: true
+          type: string
+        - in: body
+          name: data
+          schema:
+            $ref: "#/definitions/UpdateUser"
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    delete:
+      summary: Delete User by id
+      description: Delete User by id
+      operationId: deleteUser
+      tags: 
+        - User
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: path
+          name: id
+          description: 'id of User to delete'
+          required: true
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+  /users:
+    x-swagger-router-controller: user
+    get:
+      summary: Get all Users
+      description: Get all Users
+      operationId: getUsers
+      tags: 
+        - User
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: query
+          name: _limit
+          description: 'limit response length'
+          required: false
+          type: number
+        - in: query
+          name: _skip
+          description: 'skip the given amount of data'
+          required: false
+          type: number
+        - in: query
+          name: _sort
+          description: 'sort by data eg &quot;createdAt:1&quot; in ASC, &quot;createdAt:-1&quot; in DESC'
+          required: false
+          type: string
+        - in: query
+          name: _count
+          description: 'if specified, returns the number count of query result'
+          required: false
+          type: boolean
+        - in: query
+          name: _select
+          description: 'select only specified properties eg &#39;username,email&#39; exclude &#39;-email,-password&#39;'
+          required: false
+          type: string
+        - in: query
+          name: firstName
+          description: 'firstName property'
+          required: false
+          type: string
+        - in: query
+          name: lastName
+          description: 'lastName property'
+          required: false
+          type: string
+        - in: query
+          name: email
+          description: 'email property'
+          required: false
+          type: string
+        - in: query
+          name: phone
+          description: 'phone property'
+          required: false
+          type: string
+        - in: query
+          name: role
+          description: 'role property'
+          required: false
+          type: string
+        - in: query
+          name: createdAt
+          description: 'date of creation'
+          required: false
+          type: string
+        - in: query
+          name: updatedAt
+          description: 'date of last update'
+          required: false
+          type: string
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+    post:
+      summary: Create new User
+      description: Create new User
+      operationId: createUser
+      tags: 
+        - User
+      parameters:
+        - in: header
+          name: authorization
+          description: 'jwt authorization token'
+          required: false
+          type: string
+        - in: body
+          name: data
+          schema:
+            $ref: "#/definitions/CreateUser"
+      responses:
+        default:
+          description: Default Response 
+          schema:
+            $ref: "#/definitions/DefaultResponse"
+definitions:
+  Signup:
+    type: object
+    required:
+      - email
+    properties:
+      firstName:
+        type: string
+        description: 'User&#39;s firsname'
+      lastName:
+        type: string
+        description: 'User&#39;s lastName'
+      email:
+        type: string
+        description: 'Unique email of new user'
+      phone:
+        type: string
+        description: 'User&#39;s phone number'
+  CreateCustomer:
+    type: object
+    required:
+      - firstName
+      - email
+      - phone
+    properties:
+      firstName:
+        type: string
+        description: 'firstName property'
+      lastName:
+        type: string
+        description: 'lastName property'
+      email:
+        type: string
+        description: 'email property'
+      phone:
+        type: string
+        description: 'phone property'
+  UpdateCustomer:
+    type: object
+    properties:
+      firstName:
+        type: string
+        description: 'firstName property'
+      lastName:
+        type: string
+        description: 'lastName property'
+      email:
+        type: string
+        description: 'email property'
+      phone:
+        type: string
+        description: 'phone property'
+  CreateMovie:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: 'name property'
+      description:
+        type: string
+        description: 'description property'
+      active:
+        type: boolean
+        description: 'active property'
+  UpdateMovie:
+    type: object
+    properties:
+      name:
+        type: string
+        description: 'name property'
+      description:
+        type: string
+        description: 'description property'
+      active:
+        type: boolean
+        description: 'active property'
+  CreateMovieLog:
+    type: object
+    required:
+      - movie
+    properties:
+      movie:
+        type: string
+        description: 'movie(ObjectId) property'
+      airDates:
+        type: array
+        items:
+          type: string
+        description: 'airDates property'
+  UpdateMovieLog:
+    type: object
+    properties:
+      movie:
+        type: string
+        description: 'movie(ObjectId) property'
+      airDates:
+        type: array
+        items:
+          type: string
+        description: 'airDates property'
+  CreateTicket:
+    type: object
+    required:
+      - movie
+      - capacity
+      - expiry
+    properties:
+      movie:
+        type: string
+        description: 'movie(ObjectId) property'
+      capacity:
+        type: number
+        description: 'capacity property'
+      expiry:
+        type: string
+        description: 'expiry property'
+      sold:
+        type: number
+        description: 'sold property'
+  UpdateTicket:
+    type: object
+    properties:
+      movie:
+        type: string
+        description: 'movie(ObjectId) property'
+      capacity:
+        type: number
+        description: 'capacity property'
+      expiry:
+        type: string
+        description: 'expiry property'
+      sold:
+        type: number
+        description: 'sold property'
+  CreateTicketLog:
+    type: object
+    required:
+      - ticket
+      - customers
+    properties:
+      ticket:
+        type: string
+        description: 'ticket(ObjectId) property'
+      customers:
+        type: array
+        items:
+          type: string
+        description: 'customers(ObjectId) property'
+  UpdateTicketLog:
+    type: object
+    properties:
+      ticket:
+        type: string
+        description: 'ticket(ObjectId) property'
+      customers:
+        type: array
+        items:
+          type: string
+        description: 'customers(ObjectId) property'
+  CreateUser:
+    type: object
+    required:
+      - firstName
+      - email
+      - phone
+    properties:
+      firstName:
+        type: string
+        description: 'firstName property'
+      lastName:
+        type: string
+        description: 'lastName property'
+      email:
+        type: string
+        description: 'email property'
+      phone:
+        type: string
+        description: 'phone property'
+      role:
+        type: string
+        description: 'role property'
+  UpdateUser:
+    type: object
+    properties:
+      firstName:
+        type: string
+        description: 'firstName property'
+      lastName:
+        type: string
+        description: 'lastName property'
+      email:
+        type: string
+        description: 'email property'
+      phone:
+        type: string
+        description: 'phone property'
+      role:
+        type: string
+        description: 'role property'
+  DefaultResponse: {}
