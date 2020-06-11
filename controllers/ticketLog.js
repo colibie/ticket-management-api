@@ -88,7 +88,7 @@ async function createTicketLog(req, res) {
     if (!req.user) {
       return res.status('403').json({ message: 'operation not allowed' });
     }
-    
+
     if (req.user.role == 'admin') {
       const ticketLog = await TicketLog.createTicketLog(req.body);
       return res.json(ticketLog);
@@ -111,7 +111,7 @@ async function createTicketLog(req, res) {
  * @apiGroup TicketLog
  *
  * @apiUse Authentication
- * @apiParam {String} id id of TicketLog to update
+ * @apiParam {String} id id of Ticket to update its log
  * @apiUse ModelUpdateTicketLog
  * @apiUse ModelTicketLog
  */
@@ -120,13 +120,19 @@ async function updateTicketLog(req, res) {
     if (!req.user) {
       return res.status('403').json({ message: 'operation not allowed' });
     }
-    
+
+    // const data = {
+    //   $push: { customers: req.body.customer },
+    //   $inc: { sold: 1 }
+    // }
+    const data = req.body;
+
     if (req.user.role == 'admin') {
-      const ticketLog = await TicketLog.updateTicketLog({_id: req.params.id}, req.body);
+      const ticketLog = await TicketLog.updateTicketLog({ ticket: req.params.id }, data);
       return res.json(ticketLog);
     }
-    if (req.user.role == 'user' && req.user._id == req.body.user) {
-      const ticketLog = await TicketLog.updateTicketLog({_id: req.params.id}, req.body);
+    if (req.user.role == 'user' && req.user._id == data.user) {
+      const ticketLog = await TicketLog.updateTicketLog({ ticket: req.params.id }, data);
       return res.json(ticketLog);
     }
 
@@ -152,13 +158,13 @@ async function deleteTicketLog(req, res) {
     if (!req.user) {
       return res.status('403').json({ message: 'operation not allowed' });
     }
-    
+
     if (req.user.role == 'admin') {
-      const ticketLog = await TicketLog.deleteTicketLog({_id: req.params.id}, req.body);
+      const ticketLog = await TicketLog.deleteTicketLog({ _id: req.params.id }, req.body);
       return res.json(ticketLog);
     }
     if (req.user.role == 'user' && req.user._id == req.body.user) {
-      const ticketLog = await TicketLog.deleteTicketLog({_id: req.params.id}, req.body);
+      const ticketLog = await TicketLog.deleteTicketLog({ _id: req.params.id }, req.body);
       return res.json(ticketLog);
     }
 
