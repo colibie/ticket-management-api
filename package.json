@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "a127-magic": "^0.12.0",
+    "background_job_handler": "^1.0.0",
     "bcrypt-nodejs": "0.0.3",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",

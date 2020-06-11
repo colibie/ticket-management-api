@@ -7,6 +7,7 @@
 require('dotenv').config();
 
 const cluster = require('cluster');
+const backgroundJobHandler = require('background_job_handler');
 
 const { DB } = require('../models');
 // const seeder = require('./seeder');
@@ -25,18 +26,18 @@ if (cluster.isMaster) {
   console.log(`Master ${process.pid} is running`);
 
   // seed app
-  // (async () => {
-  //   try {
-  //     const result = await seeder();
-  //     console.log(result);
-  //     backgroundJobHandler.start(__dirname);
-  //     await DB.disconnect();
-  //   } catch (error) {
-  //     console.log(error);
-  //     // exit app if seeding fails
-  //     process.exit(-1);
-  //   }
-  // })();
+  (async () => {
+    try {
+      // const result = await seeder();
+      // console.log(result);
+      backgroundJobHandler.start(__dirname);
+      await DB.disconnect();
+    } catch (error) {
+      console.log(error);
+      // exit app if seeding fails
+      process.exit(-1);
+    }
+  })();
 
   // Fork workers.
   for (let i = 0; i < Config.WEB_WORKER_COUNT; i++) {
