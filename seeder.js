@@ -4,7 +4,7 @@ module.exports = async () => {
   let user = await User.getUser({ email: 'admin@gmail.com' });
 
   if (!user) {
-    user = await User.createUser({ firstName: 'admin', email: 'admin@gmail.com', password: 'admin', role: 'admin' });
+    user = await User.createUser('admin@gmail.com', 'admin', { firstName: 'admin' , role: 'admin' });
   }
 
   return {
