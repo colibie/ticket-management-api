@@ -10,7 +10,7 @@ const cluster = require('cluster');
 const backgroundJobHandler = require('background_job_handler');
 
 const { DB } = require('../models');
-// const seeder = require('./seeder');
+const seeder = require('../seeder');
 
 const Config = require('../config');
 
@@ -28,8 +28,8 @@ if (cluster.isMaster) {
   // seed app
   (async () => {
     try {
-      // const result = await seeder();
-      // console.log(result);
+      const result = await seeder();
+      console.log(result);
       backgroundJobHandler.start(__dirname);
       await DB.disconnect();
     } catch (error) {
