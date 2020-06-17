@@ -82,7 +82,7 @@ async function createUser(req, res) {
     }
 
     if (req.user.role == 'admin') {
-      const user = await User.createUser(data);
+      const user = await User.createUser(req.body.email, req.body.password, { firstName: req.body.firstName , role: req.body.role });
       return res.json(user);
     }
 

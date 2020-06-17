@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt-nodejs');
 const createUser = async (email, password, others) => {
   try {
     const existingEmail = await User.findOne({ email: new RegExp(email, 'i') });
+console.log(existingEmail)
     if (existingEmail) {
       throw new Error('email already exists');
     }
